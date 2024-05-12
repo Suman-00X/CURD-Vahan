@@ -35,8 +35,9 @@ export const getOnePerson = async(req, res) =>{
 
 export const addPerson = async(req, res) => {
 
-    console.log("add person controller called");
+    console.log("add person controller called", req.body);
     const {fullname, email, mobile, dob} = req.body;
+    
 
     try{
         const newPerson = new Person({fullname, email, mobile, dob});
@@ -52,7 +53,7 @@ export const addPerson = async(req, res) => {
 
 export const updatePerson = async(req, res) => {
 
-    console.log("update person controller called");
+    console.log("update person controller called", req.body);
     const {id} = req.params;
     const {fullname, email, mobile, dob} = req.body;
 
@@ -68,8 +69,11 @@ export const updatePerson = async(req, res) => {
             {new: true}
         );
         if(!updatedPerson){
-            return res.status(404).json({ error: "The Person you want to update can't be found in the database" });
+            res.status(404).json({ error: "The Person you want to update can't be found in the database" });
         }
+
+        res.status(200).json({message: "Updated successfully"})
+
     }
     catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
